@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhatWillWeEat2.0", "WhatWillWeEat2.0\WhatWillWeEat2.0.csproj", "{A649BDB9-237D-437D-B970-ABE2B616BDBB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A649BDB9-237D-437D-B970-ABE2B616BDBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A649BDB9-237D-437D-B970-ABE2B616BDBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A649BDB9-237D-437D-B970-ABE2B616BDBB}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{A649BDB9-237D-437D-B970-ABE2B616BDBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A649BDB9-237D-437D-B970-ABE2B616BDBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A649BDB9-237D-437D-B970-ABE2B616BDBB}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {51B931FF-00AA-4F51-9E66-00B08DE5F47C}
+	EndGlobalSection
+EndGlobal
