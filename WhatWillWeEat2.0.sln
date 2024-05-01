@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhatWillWeEat2.0", "WhatWillWeEat2.0\WhatWillWeEat2.0.csproj", "{A649BDB9-237D-437D-B970-ABE2B616BDBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhatWillWeEat2.0", "WhatWillWeEat2.0\WhatWillWeEat2.0.csproj", "{A649BDB9-237D-437D-B970-ABE2B616BDBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartUp", "StartUp\StartUp.csproj", "{A24A0F61-A122-4FAE-96E8-289E8E80C575}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,6 +19,10 @@ Global
 		{A649BDB9-237D-437D-B970-ABE2B616BDBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A649BDB9-237D-437D-B970-ABE2B616BDBB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A649BDB9-237D-437D-B970-ABE2B616BDBB}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{A24A0F61-A122-4FAE-96E8-289E8E80C575}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A24A0F61-A122-4FAE-96E8-289E8E80C575}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A24A0F61-A122-4FAE-96E8-289E8E80C575}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A24A0F61-A122-4FAE-96E8-289E8E80C575}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
