@@ -92,7 +92,9 @@ namespace WhatWillWeEat2._0.ViewModel
 
         internal void LoadRecipes()
         {
-            List<Recipe> recipesList = DbContext.Recipes.ToList();
+            List<Recipe> recipesList = DbContext.Recipes
+                .Include(r => r.RecipeIngredients)
+                .ToList();
             recipes = new ObservableCollection<Recipe>(recipesList);
             NotifyPropertyChanged(nameof(Recipes));
         }

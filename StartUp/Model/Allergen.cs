@@ -11,7 +11,7 @@ namespace StartUp.Model
         public double Quantity { get; set; }
         public string Unit { get; set; }
 
-        public List<IngredientAllergen> IngredientAllergens { get; set; }
+        public ICollection<IngredientAllergen> IngredientAllergens { get; set; }
 
         public override bool Equals(object obj)
         {

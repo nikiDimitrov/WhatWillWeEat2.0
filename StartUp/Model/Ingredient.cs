@@ -11,8 +11,8 @@ namespace StartUp.Model
         public double Quantity { get; set; }
         public string Unit { get; set; }
 
-        public List<RecipeIngredient> RecipeIngredients { get; set; }
-        public List<IngredientAllergen> IngredientAllergens { get; set; }
+        public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
+        public ICollection<IngredientAllergen> IngredientAllergens { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -26,7 +26,7 @@ namespace StartUp.Model
         {
             if (Quantity != 0 && Unit != null)
             {
-                return $"{Quantity}{Unit} {Name}";
+                return $"{Quantity} {Unit} {Name}";
             }
             else if (Quantity != 0 && Unit == null)
             {

@@ -9,7 +9,7 @@ namespace StartUp.Model
         public int ID { get; set; }
 
         public string Name { get; set; }
-        public List<RecipeIngredient> RecipeIngredients { get; set; }
+        public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
         public string Description { get; set; }
 
         public Recipe()
