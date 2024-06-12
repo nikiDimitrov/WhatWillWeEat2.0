@@ -5,11 +5,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:WhatWillWeEat2._0"
     Shell.FlyoutBehavior="Disabled"
+    xmlns:vm="clr-namespace:WhatWillWeEat2._0.ViewModel"
     Title="WhatWillWeEat2._0">
-
-    <ShellContent
-        Title="WhatWillWeEat"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-
+    <TabBar>
+        <Tab Title="Eating">
+            <ShellContent Title="What Will We Eat?" ContentTemplate="{DataTemplate local:MainPage}" />
+        </Tab>
+        <Tab Title="Recipes" Route="RecipesListPage">
+            <ShellContent Title="Recipes" ContentTemplate="{DataTemplate local:RecipesListPage}"/>
+        </Tab>
+    </TabBar>
 </Shell>

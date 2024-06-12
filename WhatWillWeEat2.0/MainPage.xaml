@@ -2,14 +2,39 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WhatWillWeEat2._0.MainPage"
-             xmlns:vm="clr-namespace:WhatWillWeEat2._0.ViewModel">
+             xmlns:vm="clr-namespace:WhatWillWeEat2._0.ViewModel"
+             xmlns:conv="clr-namespace:WhatWillWeEat2._0.Converters">
+    <ContentPage.Resources>
+        <conv:RecipeToStringConverter x:Key="recipeToStrConv"/>
+    </ContentPage.Resources>
     <ContentPage.BindingContext>
         <vm:MainPageViewModel/>
     </ContentPage.BindingContext>
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Priority="1"/>
-        <ToolbarItem Text="List Recipes" Priority="2"/>
-    </ContentPage.ToolbarItems>
-    
 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="True" Text="{Binding DisplayedRecipe, Converter={StaticResource recipeToStrConv}}" 
+               FontSize="Large"/>
+        <Button Grid.Row="1" Text="What Will We Eat?" FontSize="Large" Command="{Binding RandomizeRecipeCommand}">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroupList>
+                    <VisualStateGroup Name="CommonStates">
+                        <VisualState Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="Blue"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState Name="PointerOver">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="Green"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </VisualStateManager.VisualStateGroups>
+        </Button>
+    </Grid>
 </ContentPage>

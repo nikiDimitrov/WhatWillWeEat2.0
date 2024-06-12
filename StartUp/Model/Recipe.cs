@@ -2,7 +2,7 @@
 
 namespace StartUp.Model
 {
-    [Table("Recipes")]
+    [Table("Recipe")]
     public class Recipe
     {
         [PrimaryKey, AutoIncrement]
@@ -25,6 +25,11 @@ namespace StartUp.Model
         {
             var that = obj as Recipe;
             return this.ID == that.ID && this.Name == that.Name && this.RecipeIngredients == that.RecipeIngredients && this.Description == that.Description;
+        }
+
+        public Recipe Clone()
+        {
+            return new Recipe { ID = this.ID, Name = this.Name, Description = this.Description };
         }
     }
 }

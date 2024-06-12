@@ -2,7 +2,7 @@
 
 namespace StartUp.Model
 {
-    [Table("Ingredient_Allergen")]
+    [Table("IngredientAllergen")]
     public class IngredientAllergen
     {
         [PrimaryKey]

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="clr-namespace:CommunityToolkit.Mvvm.ComponentModel;assembly=CommunityToolkit.Mvvm"
+             x:Class="WhatWillWeEat2._0.RecipesListPage"
+             xmlns:vm="clr-namespace:WhatWillWeEat2._0.ViewModel"
+             Title="Recipes">
+    <ContentPage.BindingContext>
+        <vm:RecipesListPageViewModel/>
+    </ContentPage.BindingContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <CollectionView Grid.Row="0" ItemsSource="{Binding Recipes, Mode=TwoWay}" SelectedItem="{Binding SelectedRecipe, Mode=TwoWay}" SelectionMode="Single">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="2" RowSpacing="1" HorizontalOptions="StartAndExpand">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Text="{Binding Name, Mode=TwoWay}" BackgroundColor="Transparent" TextColor="Black" FontSize="Large"
+                                        Grid.Row="0" Grid.Column="1" FontAttributes="Bold"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Button Grid.Row="1" Text="Add" FontSize="Large" Command="{Binding AddRecipeCommand}"/>
+    </Grid>
+    
+    
+</ContentPage>

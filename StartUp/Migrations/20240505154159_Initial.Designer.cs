@@ -10,7 +10,7 @@ using StartUp;
 namespace StartUp.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240501002353_Initial")]
+    [Migration("20240505154159_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

@@ -10,11 +10,32 @@ namespace StartUp
         public DatabaseContext()
         {
             this._dbPath = System.IO.Path.Combine(System.Environment.GetFolderPath
-                (System.Environment.SpecialFolder.Personal), "WhatWillWeEat.db");
+                (System.Environment.SpecialFolder.LocalApplicationData), "WhatWillWeEat.db");
         }
         public DatabaseContext(string dbPath)
         {
-            this._dbPath = dbPath;
+            this._dbPath = dbPath; 
+        }
+
+        public override int SaveChanges()
+        {
+            var result = base.SaveChanges();
+            OnDatabaseChanged();
+            return result;
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var result = base.SaveChangesAsync(cancellationToken);
+            OnDatabaseChanged();
+            return result;
+        }
+
+        public event EventHandler DatabaseChanged;
+
+        protected virtual void OnDatabaseChanged()
+        {
+            DatabaseChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public DbSet<Ingredient> Ingredients { get; set; }
@@ -58,6 +79,22 @@ namespace StartUp
                 .HasOne(ia => ia.Allergen)
                 .WithMany(a => a.IngredientAllergens)
                 .HasForeignKey(ia => ia.AllergenId);
+
+            
+            Recipe recipe1 = new Recipe
+            {
+                ID = 1,
+                Name = "Мусака",
+                Description = "Свари картофи"
+            };
+            Recipe recipe2 = new Recipe
+            {
+                ID = 2,
+                Name = "Картофи",
+                Description = "Свари мусака"
+            };
+
+            modelBuilder.Entity<Recipe>().HasData(recipe1, recipe2);
         }
     }
 }
