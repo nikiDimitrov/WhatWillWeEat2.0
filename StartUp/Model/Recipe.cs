@@ -8,9 +8,15 @@ namespace StartUp.Model
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
 
+        [NotNull]
         public string Name { get; set; }
-        public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
+
+        [NotNull]
         public string Description { get; set; }
+
+        public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
+
+
 
         public Recipe()
         {

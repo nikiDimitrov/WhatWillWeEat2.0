@@ -18,5 +18,6 @@
                FontSize="Small" 
                Placeholder="(quantity) (unit) (name) or (quantity) (name) or (name)"/>
         <Button Text="Save" FontSize="Medium" Margin="5" Command="{Binding SaveCommand}"/>
+        <Button Text="Delete" FontSize="Medium" Margin="5" Command="{Binding DeleteCommand}"/>
     </VerticalStackLayout>
 </ContentPage>

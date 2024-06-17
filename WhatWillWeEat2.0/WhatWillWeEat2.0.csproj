@@ -114,6 +114,9 @@
 	  <MauiXaml Update="AddRecipePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="AllergenPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="MyAllergensPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

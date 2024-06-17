@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using StartUp;
 using StartUp.Model;
@@ -121,12 +122,15 @@ namespace WhatWillWeEat2._0.ViewModel
             List<RecipeIngredient> recipeIngredients = new List<RecipeIngredient>();
             List<Ingredient> ingredients = new List<Ingredient>();
 
-            string[] splittedIngredients = Ingredients.Split(", ").ToArray();
+            string[] splittedIngredients = Ingredients
+                .Trim()
+                .Split(", ")
+                .ToArray();
 
             Recipe recipe = new Recipe()
             {
-                Name = Name,
-                Description = Description
+                Name = Name.Trim(),
+                Description = Description.Trim()
             };
 
 
@@ -152,6 +156,21 @@ namespace WhatWillWeEat2._0.ViewModel
 
                 ingredients.Add(ingredient);
                 recipeIngredients.Add(recipeIngredient);
+
+                List<Allergen> allergens = await DbContext.Allergens
+                    .Where(a => a.Name.ToLower() == ingredient.Name.ToLower())
+                    .ToListAsync();
+
+                foreach(Allergen allergen in allergens)
+                {
+                    await DbContext.IngredientAllergens.AddAsync(new IngredientAllergen
+                    {
+                        Allergen = allergen,
+                        Ingredient = ingredient,
+                        IngredientId = ingredient.ID,
+                        AllergenId = allergen.ID
+                    });
+                }
             }
 
             recipe.RecipeIngredients = recipeIngredients;

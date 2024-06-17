@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StartUp.Model;
+using System.Diagnostics;
 
 
 namespace StartUp
@@ -80,21 +81,92 @@ namespace StartUp
                 .WithMany(a => a.IngredientAllergens)
                 .HasForeignKey(ia => ia.AllergenId);
 
-            
+
             Recipe recipe1 = new Recipe
             {
                 ID = 1,
                 Name = "Мусака",
-                Description = "Свари картофи"
+                Description = "Свари картофи",
             };
             Recipe recipe2 = new Recipe
             {
                 ID = 2,
                 Name = "Картофи",
-                Description = "Свари мусака"
+                Description = "Свари мусака",
             };
 
-            modelBuilder.Entity<Recipe>().HasData(recipe1, recipe2);
-        }
+            Recipe recipe3 = new Recipe
+            {
+                ID = 3,
+                Name = "Боб",
+                Description = "Свари боб",
+            };
+
+            Recipe recipe4 = new Recipe
+            {
+                ID = 4,
+                Name = "Леща",
+                Description = "Свари леща",
+            };
+
+
+            Allergen allergen = new Allergen
+            {
+                ID = 1,
+                Name = "боб",
+            };
+            Allergen allergen2 = new Allergen
+            {
+                ID = 2,
+                Name = "леща",
+            };
+
+            Ingredient ingredient = new Ingredient()
+            {
+                ID = 1,
+                Name = "боб",
+                Unit = "кг",
+                Quantity = 3
+            };
+
+            Ingredient ingredient2 = new Ingredient()
+            {
+                ID = 2,
+                Name = "леща",
+                Unit = "",
+                Quantity = 0
+            };
+
+            RecipeIngredient recipeIngredient1 = new RecipeIngredient
+            {
+                RecipeId = 3,
+                IngredientId = 1,
+            };
+
+            RecipeIngredient recipeIngredient2 = new RecipeIngredient
+            {
+                RecipeId = 4,
+                IngredientId = 2,
+            };
+
+            // IngredientAllergens
+            IngredientAllergen ingredientAllergen1 = new IngredientAllergen
+            {
+                AllergenId = 1,
+                IngredientId = 1,
+            };
+
+            IngredientAllergen ingredientAllergen2 = new IngredientAllergen
+            {
+                AllergenId = 2,
+                IngredientId = 2,
+            };
+
+            modelBuilder.Entity<Recipe>().HasData(recipe1, recipe2, recipe3, recipe4);
+            modelBuilder.Entity<Ingredient>().HasData(ingredient, ingredient2);
+            modelBuilder.Entity<Allergen>().HasData(allergen, allergen2);
+            modelBuilder.Entity<RecipeIngredient>().HasData(recipeIngredient1, recipeIngredient2);
+            modelBuilder.Entity<IngredientAllergen>().HasData(ingredientAllergen1, ingredientAllergen2);
+         }
     }
 }

@@ -50,6 +50,7 @@ namespace WhatWillWeEat2._0.ViewModel
                 if(recipes != value)
                 {
                     recipes = value;
+                    NotifyPropertyChanged(nameof(Recipes));
                 }
             }
         }

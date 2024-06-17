@@ -7,9 +7,9 @@ namespace StartUp.Model
     {
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
+
+        [NotNull]
         public string Name { get; set; }
-        public double Quantity { get; set; }
-        public string Unit { get; set; }
 
         public ICollection<IngredientAllergen> IngredientAllergens { get; set; }
 
@@ -17,8 +17,13 @@ namespace StartUp.Model
         {
             var that = obj as Allergen;
 
-            return this.ID == that.ID && this.Name == that.Name && this.Quantity == that.Quantity && this.Unit == that.Unit
+            return this.ID == that.ID && this.Name == that.Name
                 && this.IngredientAllergens == that.IngredientAllergens;
+        }
+
+        public Allergen Clone()
+        {
+            return new Allergen { ID = this.ID, Name = this.Name };
         }
     }
 }

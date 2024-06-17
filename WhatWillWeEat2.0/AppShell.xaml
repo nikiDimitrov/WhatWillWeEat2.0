@@ -14,5 +14,8 @@
         <Tab Title="Recipes" Route="RecipesListPage">
             <ShellContent Title="Recipes" ContentTemplate="{DataTemplate local:RecipesListPage}"/>
         </Tab>
+        <Tab Title="My Allergens" Route="MyAllergensPage">
+            <ShellContent Title="My Allergens" ContentTemplate="{DataTemplate local:MyAllergensPage}"/>
+        </Tab>
     </TabBar>
 </Shell>

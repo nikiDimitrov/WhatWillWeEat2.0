@@ -6,6 +6,7 @@ namespace WhatWillWeEat2._0;
 public partial class RecipePage : ContentPage
 {
 	public RecipePageViewModel recipeVM;
+
 	public RecipePage(Recipe recipe)
 	{
 		recipeVM = new RecipePageViewModel(recipe);

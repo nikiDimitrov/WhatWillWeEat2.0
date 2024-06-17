@@ -7,11 +7,16 @@ namespace StartUp.Model
     {
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
+
+        [NotNull]
         public string Name { get; set; }
-        public double Quantity { get; set; }
-        public string Unit { get; set; }
+
+        public double? Quantity { get; set; }
+
+        public string? Unit { get; set; }
 
         public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
+
         public ICollection<IngredientAllergen> IngredientAllergens { get; set; }
 
         public override bool Equals(object obj)

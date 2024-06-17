@@ -6,6 +6,7 @@
         {
             InitializeComponent();
             Routing.RegisterRoute(nameof(RecipesListPage), typeof(RecipesListPage));
+            Routing.RegisterRoute(nameof(MyAllergensPage), typeof(MyAllergensPage));
         }
     }
 }

@@ -2,11 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using StartUp;
 using StartUp.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace WhatWillWeEat2._0.ViewModel
@@ -17,6 +12,7 @@ namespace WhatWillWeEat2._0.ViewModel
         private Recipe oldRecipe;
         private DatabaseContext _dbContext;
         private RelayCommand saveCommand;
+        private RelayCommand deleteCommand;
         private ICommand returnEntryCommand;
 
         public RecipePageViewModel(Recipe recipe)
@@ -75,6 +71,18 @@ namespace WhatWillWeEat2._0.ViewModel
             }
         }
 
+        public RelayCommand DeleteCommand
+        {
+            get
+            {
+                if(deleteCommand == null)
+                {
+                    deleteCommand = new RelayCommand(DeleteRecipe);
+                }
+                return deleteCommand;
+            }
+        }
+
         public ICommand ReturnEntryCommand
         {
             get
@@ -94,6 +102,47 @@ namespace WhatWillWeEat2._0.ViewModel
 
             await AppShell.Current.DisplayAlert("Edited!", "Your recipe is edited successfully!", "OK");
             await AppShell.Current.Navigation.PopAsync();
+        }
+
+        private async void DeleteRecipe()
+        {
+            bool result = await AppShell.Current.DisplayAlert("Are you sure?", "Are you sure you want to delete this recipe?", "Yes", "No");
+            if(result == true)
+            {
+                List<RecipeIngredient> recipeIngredients = await DbContext.RecipeIngredients
+                    .Where(ri => ri.RecipeId == OldRecipe.ID)
+                    .ToListAsync();
+
+                DbContext.RecipeIngredients.RemoveRange(recipeIngredients);
+
+                foreach(RecipeIngredient recipeIngredient in recipeIngredients)
+                {
+                    Ingredient ingredient = await DbContext.Ingredients.FirstOrDefaultAsync(i => i.ID == recipeIngredient.IngredientId);
+                    List<IngredientAllergen> allergenIngredients = await DbContext.IngredientAllergens
+                        .Where(ai => ai.IngredientId == ingredient.ID)
+                        .ToListAsync();
+
+                    if(allergenIngredients.Count != 0)
+                    {
+                        DbContext.IngredientAllergens.RemoveRange(allergenIngredients);
+                    }
+
+                    DbContext.Ingredients.Remove(ingredient);
+                }
+
+                DbContext.Recipes.Remove(OldRecipe);
+
+                try
+                {
+                    await DbContext.SaveChangesAsync();
+                    await AppShell.Current.DisplayAlert("Deleted!", "Recipe successfully deleted!", "OK");
+                    await AppShell.Current.Navigation.PopAsync();
+                }
+                catch
+                {
+                    await AppShell.Current.DisplayAlert("Not deleted", "Deleting recipe was not successful.", "OK");
+                }
+            }
         }
 
         private bool IsRecipeEdited
