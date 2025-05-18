@@ -7,7 +7,7 @@
     <ContentPage.BindingContext>
         <vm:AddRecipePageViewModel/>
     </ContentPage.BindingContext>
-    <VerticalStackLayout>
+    <VerticalStackLayout Padding="20">
         <Label Text="Name:" FontSize="Medium"/>
         <Entry Text="{Binding Name, Mode=TwoWay}" FontSize="Medium" ReturnCommand="{Binding ReturnEntryCommand}"/>
         <Label Text="Description:" FontSize="Medium"/>
@@ -15,6 +15,6 @@
         <Label Text="Ingredients:" FontSize="Medium"/>
         <Entry Text="{Binding Ingredients, Mode=TwoWay}" FontSize="Small" 
                 Placeholder="(quantity) (unit) (name) or (quantity) (name) or (name)" ReturnCommand="{Binding ReturnEntryCommand}"/>
-        <Button Text="Save" FontSize="Medium" Margin="5" Command="{Binding SaveCommand}"/>
+        <Button BackgroundColor="#D7B76E" Text="Save" FontSize="Medium" Margin="5" Command="{Binding SaveCommand}"/>
     </VerticalStackLayout>
 </ContentPage>

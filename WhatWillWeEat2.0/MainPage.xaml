@@ -11,7 +11,7 @@
         <vm:MainPageViewModel/>
     </ContentPage.BindingContext>
 
-    <Grid>
+    <Grid Padding="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
@@ -24,7 +24,7 @@
                     <VisualStateGroup Name="CommonStates">
                         <VisualState Name="Normal">
                             <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="Blue"/>
+                                <Setter Property="BackgroundColor" Value="#D7B76E"/>
                             </VisualState.Setters>
                         </VisualState>
                         <VisualState Name="PointerOver">

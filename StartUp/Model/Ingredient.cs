@@ -15,9 +15,9 @@ namespace StartUp.Model
 
         public string? Unit { get; set; }
 
-        public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
+        public List<RecipeIngredient> RecipeIngredients { get; set; }
 
-        public ICollection<IngredientAllergen> IngredientAllergens { get; set; }
+        public List<IngredientAllergen> IngredientAllergens { get; set; }
 
         public override bool Equals(object obj)
         {

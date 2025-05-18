@@ -5,19 +5,16 @@
              xmlns:vm="clr-namespace:WhatWillWeEat2._0.ViewModel"
              xmlns:conv="clr-namespace:WhatWillWeEat2._0.Converters"
              Title="Recipe">
-    <ContentPage.Resources>
-        <conv:IngredientToStringConverter x:Key="ingrToStrConv"/>
-    </ContentPage.Resources>
     <VerticalStackLayout Padding="12">
         <Label Text="Name:" FontSize="Medium"/>
         <Entry Text="{Binding CurrentRecipe.Name, Mode=TwoWay}" ReturnCommand="{Binding ReturnEntryCommand}" FontSize="Medium"/>
         <Label Text="Description:" FontSize="Medium"/>
         <Entry Text="{Binding CurrentRecipe.Description, Mode=TwoWay}" ReturnCommand="{Binding ReturnEntryCommand}" FontSize="Medium"/>
         <Label Text="Ingredients:" FontSize="Medium"/>
-        <Entry Text="{Binding CurrentRecipe.RecipeIngredients, Converter={StaticResource ingrToStrConv}, Mode=OneWay}" ReturnCommand="{Binding ReturnEntryCommand}" 
+        <Entry Text="{Binding IngredientsDisplay}" ReturnCommand="{Binding ReturnEntryCommand}" 
                FontSize="Small" 
                Placeholder="(quantity) (unit) (name) or (quantity) (name) or (name)"/>
-        <Button Text="Save" FontSize="Medium" Margin="5" Command="{Binding SaveCommand}"/>
-        <Button Text="Delete" FontSize="Medium" Margin="5" Command="{Binding DeleteCommand}"/>
+        <Button BackgroundColor="#D7B76E" Text="Save" FontSize="Medium" Margin="5" Command="{Binding SaveCommand}"/>
+        <Button BackgroundColor="#D7B76E" Text="Delete" FontSize="Medium" Margin="5" Command="{Binding DeleteCommand}"/>
     </VerticalStackLayout>
 </ContentPage>

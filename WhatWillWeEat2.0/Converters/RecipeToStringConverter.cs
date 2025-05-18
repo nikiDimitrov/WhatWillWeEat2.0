@@ -1,13 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using StartUp;
-using StartUp.Model;
-using System;
-using System.Collections.Generic;
+﻿using StartUp.Model;
 using System.Globalization;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WhatWillWeEat2._0.Converters
 {

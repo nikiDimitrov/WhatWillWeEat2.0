@@ -1,16 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using StartUp;
 using StartUp.Model;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using WhatWillWeEat2._0.Converters;
 
 namespace WhatWillWeEat2._0.ViewModel
 {
@@ -91,11 +84,13 @@ namespace WhatWillWeEat2._0.ViewModel
             await AppShell.Current.Navigation.PushAsync(new AddRecipePage());
         }
 
-        internal void LoadRecipes()
+        internal async void LoadRecipes()
         {
-            List<Recipe> recipesList = DbContext.Recipes
+            List<Recipe> recipesList = await DbContext.Recipes
                 .Include(r => r.RecipeIngredients)
-                .ToList();
+                .ThenInclude(ri => ri.Ingredient)
+                .ToListAsync();
+
             recipes = new ObservableCollection<Recipe>(recipesList);
             NotifyPropertyChanged(nameof(Recipes));
         }

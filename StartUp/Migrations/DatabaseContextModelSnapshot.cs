@@ -69,14 +69,14 @@ namespace StartUp.Migrations
                         {
                             ID = 1,
                             Name = "боб",
-                            Quantity = 3.0,
+                            Quantity = 1.0,
                             Unit = "кг"
                         },
                         new
                         {
                             ID = 2,
                             Name = "леща",
-                            Quantity = 0.0,
+                            Quantity = 2.0,
                             Unit = ""
                         });
                 });
@@ -130,24 +130,12 @@ namespace StartUp.Migrations
                         new
                         {
                             ID = 1,
-                            Description = "Свари картофи",
-                            Name = "Мусака"
-                        },
-                        new
-                        {
-                            ID = 2,
-                            Description = "Свари мусака",
-                            Name = "Картофи"
-                        },
-                        new
-                        {
-                            ID = 3,
                             Description = "Свари боб",
                             Name = "Боб"
                         },
                         new
                         {
-                            ID = 4,
+                            ID = 2,
                             Description = "Свари леща",
                             Name = "Леща"
                         });
@@ -170,12 +158,12 @@ namespace StartUp.Migrations
                     b.HasData(
                         new
                         {
-                            RecipeId = 3,
+                            RecipeId = 1,
                             IngredientId = 1
                         },
                         new
                         {
-                            RecipeId = 4,
+                            RecipeId = 2,
                             IngredientId = 2
                         });
                 });

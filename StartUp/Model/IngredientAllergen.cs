@@ -11,6 +11,7 @@ namespace StartUp.Model
 
         [PrimaryKey]
         public int AllergenId { get; set; }
+
         public Allergen Allergen { get; set; }
 
         public override bool Equals(object obj)

@@ -1,41 +1,43 @@
-﻿using StartUp.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using StartUp;
+using StartUp.Model;
 
 namespace WhatWillWeEat2._0.Services
 {
     public static class IngredientUtils
     {
+        private static DatabaseContext _dbContext = new DatabaseContext();
         public static Ingredient? ConvertStringToIngredient(string ingredientString)
         {
             string[] splittedIngredientString = ingredientString.Split(" ")
                 .ToArray();
+
+            Ingredient ingredient;
 
             try
             {
                 switch (splittedIngredientString.Length)
                 {
                     case 1:
-                        return new Ingredient()
+                        ingredient = new Ingredient()
                         {
                             Name = ingredientString
                         };
+                        break;
                     case 2:
-                        return new Ingredient()
+                        ingredient = new Ingredient()
                         {
                             Quantity = double.Parse(splittedIngredientString[0]),
                             Name = splittedIngredientString[1]
                         };
+                        break;
                     case 3:
-                        return new Ingredient()
+                        ingredient = new Ingredient()
                         {
                             Quantity = double.Parse(splittedIngredientString[0]),
                             Unit = splittedIngredientString[1],
                             Name = splittedIngredientString[2]
                         };
+                        break;
                     default:
                         throw new InvalidIngredientException("Ingredient is in invalid format!");
                 }
@@ -44,7 +46,8 @@ namespace WhatWillWeEat2._0.Services
             {
                 throw new InvalidIngredientException("Ingredient is in invalid format!");
             }
-            
+
+            return ingredient;
         }
 
         public static object? GetPropertyValue(object src, string propertyName)

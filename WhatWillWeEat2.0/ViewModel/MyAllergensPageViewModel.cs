@@ -89,7 +89,7 @@ namespace WhatWillWeEat2._0.ViewModel
         private async void AddAllergen()
         {
             await AppShell.Current.Navigation.PopAsync();
-            //await AppShell.Current.Navigation.PushAsync(new AddAllergenPage());
+            await AppShell.Current.Navigation.PushAsync(new AddAllergenPage());
         }
     }
 }

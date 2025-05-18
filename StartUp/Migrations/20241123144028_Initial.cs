@@ -2,6 +2,8 @@
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace StartUp.Migrations
 {
     /// <inheritdoc />
@@ -16,9 +18,7 @@ namespace StartUp.Migrations
                 {
                     ID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Quantity = table.Column<double>(type: "REAL", nullable: false),
-                    Unit = table.Column<string>(type: "TEXT", nullable: false)
+                    Name = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,8 +32,8 @@ namespace StartUp.Migrations
                     ID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Quantity = table.Column<double>(type: "REAL", nullable: false),
-                    Unit = table.Column<string>(type: "TEXT", nullable: false)
+                    Quantity = table.Column<double>(type: "REAL", nullable: true),
+                    Unit = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -100,6 +100,51 @@ namespace StartUp.Migrations
                         principalTable: "Recipes",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Allergens",
+                columns: new[] { "ID", "Name" },
+                values: new object[,]
+                {
+                    { 1, "боб" },
+                    { 2, "леща" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Ingredients",
+                columns: new[] { "ID", "Name", "Quantity", "Unit" },
+                values: new object[,]
+                {
+                    { 1, "боб", 1.0, "кг" },
+                    { 2, "леща", 2.0, "" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Recipes",
+                columns: new[] { "ID", "Description", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Свари боб", "Боб" },
+                    { 2, "Свари леща", "Леща" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "IngredientAllergens",
+                columns: new[] { "AllergenId", "IngredientId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 2, 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "RecipeIngredients",
+                columns: new[] { "IngredientId", "RecipeId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 2, 2 }
                 });
 
             migrationBuilder.CreateIndex(

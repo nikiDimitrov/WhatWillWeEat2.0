@@ -1,6 +1,4 @@
-﻿
-using CommunityToolkit.Mvvm.Input;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using CommunityToolkit.Mvvm.Input;
 using StartUp;
 using StartUp.Model;
 using System.Collections.ObjectModel;
@@ -59,7 +57,6 @@ namespace WhatWillWeEat2._0.ViewModel
                 if(_dbContext == null)
                 {
                     _dbContext = new DatabaseContext();
-                    _dbContext.Database.EnsureCreatedAsync();
                 }
                 return _dbContext;
             }
@@ -100,7 +97,7 @@ namespace WhatWillWeEat2._0.ViewModel
 
         internal void LoadRecipes()
         {
-            _dbContext = null;
+            DbContext.Database.EnsureCreated();
             List<Recipe> recipesList = DbContext.Recipes.ToList();
             recipes = new ObservableCollection<Recipe>(recipesList);
             NotifyPropertyChanged(nameof(Recipes));

@@ -8,30 +8,23 @@
     <ContentPage.BindingContext>
         <vm:RecipesListPageViewModel/>
     </ContentPage.BindingContext>
-    <Grid>
+    <Grid Padding="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <CollectionView Grid.Row="0" ItemsSource="{Binding Recipes, Mode=TwoWay}" SelectedItem="{Binding SelectedRecipe, Mode=TwoWay}" SelectionMode="Single">
+        <CollectionView Grid.Row="0" ItemsSource="{Binding Recipes, Mode=TwoWay}" Margin="3"
+                        SelectedItem="{Binding SelectedRecipe, Mode=TwoWay}" SelectionMode="Single">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Padding="2" RowSpacing="1" HorizontalOptions="StartAndExpand">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                    <Frame InputTransparent="True" BorderColor="LightGray" Margin="5" CornerRadius="10" Padding="10" HorizontalOptions="FillAndExpand">
                         <Label Text="{Binding Name, Mode=TwoWay}" BackgroundColor="Transparent" TextColor="Black" FontSize="Large"
-                                        Grid.Row="0" Grid.Column="1" FontAttributes="Bold"/>
-                    </Grid>
+                            Grid.Row="0" Grid.Column="1" FontAttributes="Bold"/>
+                    </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        <Button Grid.Row="1" Text="Add" FontSize="Large" Command="{Binding AddRecipeCommand}"/>
+        <Button BackgroundColor="#D7B76E" Grid.Row="1" Text="Add" FontSize="Large" Command="{Binding AddRecipeCommand}"/>
     </Grid>
     
     

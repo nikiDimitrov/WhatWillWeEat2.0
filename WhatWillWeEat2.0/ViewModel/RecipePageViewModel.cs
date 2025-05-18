@@ -95,6 +95,11 @@ namespace WhatWillWeEat2._0.ViewModel
             }
         }
 
+        public string IngredientsDisplay =>
+            string.Join(", ", CurrentRecipe.RecipeIngredients
+                .Select(ri => ri.Ingredient?.ToString())
+                .Where(s => !string.IsNullOrWhiteSpace(s)));
+
         private async void SaveRecipe()
         {
             DbContext.Recipes.Update(currentRecipe);
@@ -110,6 +115,7 @@ namespace WhatWillWeEat2._0.ViewModel
             if(result == true)
             {
                 List<RecipeIngredient> recipeIngredients = await DbContext.RecipeIngredients
+                    .Include(ri => ri.Ingredient)
                     .Where(ri => ri.RecipeId == OldRecipe.ID)
                     .ToListAsync();
 
@@ -117,7 +123,7 @@ namespace WhatWillWeEat2._0.ViewModel
 
                 foreach(RecipeIngredient recipeIngredient in recipeIngredients)
                 {
-                    Ingredient ingredient = await DbContext.Ingredients.FirstOrDefaultAsync(i => i.ID == recipeIngredient.IngredientId);
+                    Ingredient ingredient = recipeIngredient.Ingredient;
                     List<IngredientAllergen> allergenIngredients = await DbContext.IngredientAllergens
                         .Where(ai => ai.IngredientId == ingredient.ID)
                         .ToListAsync();

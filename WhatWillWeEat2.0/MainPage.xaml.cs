@@ -1,5 +1,4 @@
-﻿using StartUp;
-using WhatWillWeEat2._0.ViewModel;
+﻿using WhatWillWeEat2._0.ViewModel;
 
 namespace WhatWillWeEat2._0
 {

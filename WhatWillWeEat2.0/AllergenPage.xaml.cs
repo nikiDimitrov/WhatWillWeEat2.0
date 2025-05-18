@@ -13,4 +13,10 @@ public partial class AllergenPage : ContentPage
         this.BindingContext = allergenVM;
         InitializeComponent();
 	}
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        ((AllergenPageViewModel)BindingContext).LoadAllergicRecipes();
+    }
 }

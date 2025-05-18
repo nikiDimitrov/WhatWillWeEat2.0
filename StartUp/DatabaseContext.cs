@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StartUp.Model;
-using System.Diagnostics;
 
 
 namespace StartUp
@@ -48,7 +47,9 @@ namespace StartUp
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite($"Filename={this._dbPath}");
+            base.OnConfiguring(optionsBuilder);
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Recipe>().HasKey(r => r.ID);
@@ -81,30 +82,16 @@ namespace StartUp
                 .WithMany(a => a.IngredientAllergens)
                 .HasForeignKey(ia => ia.AllergenId);
 
-
             Recipe recipe1 = new Recipe
             {
                 ID = 1,
-                Name = "Мусака",
-                Description = "Свари картофи",
-            };
-            Recipe recipe2 = new Recipe
-            {
-                ID = 2,
-                Name = "Картофи",
-                Description = "Свари мусака",
-            };
-
-            Recipe recipe3 = new Recipe
-            {
-                ID = 3,
                 Name = "Боб",
                 Description = "Свари боб",
             };
 
-            Recipe recipe4 = new Recipe
+            Recipe recipe2 = new Recipe
             {
-                ID = 4,
+                ID = 2,
                 Name = "Леща",
                 Description = "Свари леща",
             };
@@ -126,7 +113,7 @@ namespace StartUp
                 ID = 1,
                 Name = "боб",
                 Unit = "кг",
-                Quantity = 3
+                Quantity = 1
             };
 
             Ingredient ingredient2 = new Ingredient()
@@ -134,18 +121,18 @@ namespace StartUp
                 ID = 2,
                 Name = "леща",
                 Unit = "",
-                Quantity = 0
+                Quantity = 2
             };
 
             RecipeIngredient recipeIngredient1 = new RecipeIngredient
             {
-                RecipeId = 3,
+                RecipeId = 1,
                 IngredientId = 1,
             };
 
             RecipeIngredient recipeIngredient2 = new RecipeIngredient
             {
-                RecipeId = 4,
+                RecipeId = 2,
                 IngredientId = 2,
             };
 
@@ -162,7 +149,7 @@ namespace StartUp
                 IngredientId = 2,
             };
 
-            modelBuilder.Entity<Recipe>().HasData(recipe1, recipe2, recipe3, recipe4);
+            modelBuilder.Entity<Recipe>().HasData(recipe1, recipe2);
             modelBuilder.Entity<Ingredient>().HasData(ingredient, ingredient2);
             modelBuilder.Entity<Allergen>().HasData(allergen, allergen2);
             modelBuilder.Entity<RecipeIngredient>().HasData(recipeIngredient1, recipeIngredient2);

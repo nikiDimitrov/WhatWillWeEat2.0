@@ -14,9 +14,7 @@ namespace StartUp.Model
         [NotNull]
         public string Description { get; set; }
 
-        public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
-
-
+        public List<RecipeIngredient> RecipeIngredients { get; set; }
 
         public Recipe()
         {
@@ -30,12 +28,18 @@ namespace StartUp.Model
         public override bool Equals(object obj)
         {
             var that = obj as Recipe;
-            return this.ID == that.ID && this.Name == that.Name && this.RecipeIngredients == that.RecipeIngredients && this.Description == that.Description;
+            return this.ID == that.ID && this.Name == that.Name && this.RecipeIngredients.SequenceEqual(that.RecipeIngredients) && this.Description == that.Description;
         }
 
         public Recipe Clone()
         {
-            return new Recipe { ID = this.ID, Name = this.Name, Description = this.Description };
+            return new Recipe
+            {
+                ID = this.ID,
+                Name = this.Name,
+                Description = this.Description,
+                RecipeIngredients = this.RecipeIngredients
+            };
         }
     }
 }
