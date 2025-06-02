@@ -20,5 +20,10 @@ namespace StartUp.Model
             return this.RecipeId == that.RecipeId && this.Recipe == that.Recipe
                 && this.IngredientId == that.IngredientId && this.Ingredient == that.Ingredient;
         }
+
+        public override string ToString()
+        {
+            return $"{Ingredient}";
+        }
     }
 }

@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using StartUp;
 using StartUp.Model;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Input;
 
 namespace WhatWillWeEat2._0.ViewModel
@@ -14,11 +16,20 @@ namespace WhatWillWeEat2._0.ViewModel
         private RelayCommand saveCommand;
         private RelayCommand deleteCommand;
         private ICommand returnEntryCommand;
-
+        private ICommand addIngredientCommand;
+        private ICommand removeIngredientCommand;
         public RecipePageViewModel(Recipe recipe)
         {
             CurrentRecipe = recipe;
             OldRecipe = recipe.Clone();
+
+            foreach (var ri in CurrentRecipe.RecipeIngredients)
+            {
+                if (ri.Ingredient is INotifyPropertyChanged npc)
+                {
+                    npc.PropertyChanged += OnIngredientChanged;
+                }
+            }
         }
 
         public Recipe CurrentRecipe
@@ -33,6 +44,88 @@ namespace WhatWillWeEat2._0.ViewModel
                 NotifyPropertyChanged(nameof(CurrentRecipe));
             }
         }
+
+        public ObservableCollection<RecipeIngredient> EditableIngredients
+        {
+            get => CurrentRecipe.RecipeIngredients;
+            set
+            {
+                // Unsubscribe from previous
+                foreach (var ri in CurrentRecipe.RecipeIngredients)
+                {
+                    if (ri.Ingredient is INotifyPropertyChanged npcOld)
+                        npcOld.PropertyChanged -= OnIngredientChanged;
+                }
+
+                CurrentRecipe.RecipeIngredients = value;
+
+                // Subscribe to new
+                foreach (var ri in value)
+                {
+                    if (ri.Ingredient is INotifyPropertyChanged npcNew)
+                        npcNew.PropertyChanged += OnIngredientChanged;
+                }
+
+                NotifyPropertyChanged(nameof(EditableIngredients));
+                RefreshSave();
+            }
+        }
+
+
+        public ICommand AddIngredientCommand
+        {
+            get
+            {
+                if(addIngredientCommand == null)
+                {
+                    addIngredientCommand = new RelayCommand(AddIngredient);
+                }
+                return addIngredientCommand;
+            }
+        }
+
+        public ICommand RemoveIngredientCommand
+        {
+            get
+            {
+                if (removeIngredientCommand == null)
+                {
+                    removeIngredientCommand = new RelayCommand<RecipeIngredient>(RemoveIngredient);
+                }
+                return removeIngredientCommand;
+            }
+        }
+
+        private void AddIngredient()
+        {
+            var newIngredient = new Ingredient();
+            var newRecipeIngredient = new RecipeIngredient
+            {
+                Ingredient = newIngredient
+            };
+
+            EditableIngredients.Add(newRecipeIngredient);
+
+            if (newIngredient is INotifyPropertyChanged npc)
+                npc.PropertyChanged += OnIngredientChanged;
+
+            RefreshSave();
+        }
+
+
+        private void RemoveIngredient(RecipeIngredient recipeIngredient)
+        {
+            EditableIngredients.Remove(recipeIngredient);
+
+            Ingredient ingredientActual = DbContext.Ingredients.FirstOrDefault(i => i.Name == recipeIngredient.Ingredient.Name);
+
+            DbContext.RecipeIngredients.Remove(recipeIngredient);
+            DbContext.Ingredients.Remove(ingredientActual);
+            DbContext.SaveChanges();
+            RefreshSave();
+        }
+
+
 
         public DatabaseContext DbContext
         {
@@ -65,7 +158,7 @@ namespace WhatWillWeEat2._0.ViewModel
             {
                 if(saveCommand == null)
                 {
-                    saveCommand = new RelayCommand(SaveRecipe, () => IsRecipeEdited);
+                    saveCommand = new RelayCommand(SaveRecipe);
                 }
                 return saveCommand;
             }
@@ -95,15 +188,21 @@ namespace WhatWillWeEat2._0.ViewModel
             }
         }
 
-        public string IngredientsDisplay =>
-            string.Join(", ", CurrentRecipe.RecipeIngredients
-                .Select(ri => ri.Ingredient?.ToString())
-                .Where(s => !string.IsNullOrWhiteSpace(s)));
-
         private async void SaveRecipe()
         {
             DbContext.Recipes.Update(currentRecipe);
             await DbContext.SaveChangesAsync();
+
+            var updatedRecipe = await DbContext.Recipes
+                .Include(r => r.RecipeIngredients)
+                .ThenInclude(ri => ri.Ingredient)
+                .FirstOrDefaultAsync(r => r.ID == currentRecipe.ID);
+
+            if (updatedRecipe != null)
+            {
+                CurrentRecipe = updatedRecipe;
+                EditableIngredients = new ObservableCollection<RecipeIngredient>(updatedRecipe.RecipeIngredients);
+            }
 
             await AppShell.Current.DisplayAlert("Edited!", "Your recipe is edited successfully!", "OK");
             await AppShell.Current.Navigation.PopAsync();
@@ -112,7 +211,7 @@ namespace WhatWillWeEat2._0.ViewModel
         private async void DeleteRecipe()
         {
             bool result = await AppShell.Current.DisplayAlert("Are you sure?", "Are you sure you want to delete this recipe?", "Yes", "No");
-            if(result == true)
+            if(result)
             {
                 List<RecipeIngredient> recipeIngredients = await DbContext.RecipeIngredients
                     .Include(ri => ri.Ingredient)
@@ -151,22 +250,13 @@ namespace WhatWillWeEat2._0.ViewModel
             }
         }
 
-        private bool IsRecipeEdited
+        private void OnIngredientChanged(object sender, PropertyChangedEventArgs e)
         {
-            get
-            {
-                if(CurrentRecipe.Equals(OldRecipe))
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
+            RefreshSave();
         }
 
-        private void RefreshSave()
+
+        public void RefreshSave()
         {
             SaveCommand.NotifyCanExecuteChanged();
         }

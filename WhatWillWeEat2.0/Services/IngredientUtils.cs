@@ -5,7 +5,6 @@ namespace WhatWillWeEat2._0.Services
 {
     public static class IngredientUtils
     {
-        private static DatabaseContext _dbContext = new DatabaseContext();
         public static Ingredient? ConvertStringToIngredient(string ingredientString)
         {
             string[] splittedIngredientString = ingredientString.Split(" ")

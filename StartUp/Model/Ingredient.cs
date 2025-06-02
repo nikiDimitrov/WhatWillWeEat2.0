@@ -1,4 +1,6 @@
 ﻿using SQLite;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace StartUp.Model
 {
@@ -42,5 +44,28 @@ namespace StartUp.Model
                 return $"{Name}";
             }
         }
+
+        public Ingredient Clone()
+        {
+            return new Ingredient
+            {
+                ID = this.ID,
+                Name = this.Name,
+                Quantity = this.Quantity,
+                Unit = this.Unit,
+            };
+        }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+        public void NotifyChanged(string propertyName)
+        {
+            OnPropertyChanged(propertyName);
+        }
+
     }
 }

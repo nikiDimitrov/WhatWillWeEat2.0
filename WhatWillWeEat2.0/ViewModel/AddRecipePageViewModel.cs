@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using StartUp;
 using StartUp.Model;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Input;
 using WhatWillWeEat2._0.Services;
 
@@ -15,7 +17,11 @@ namespace WhatWillWeEat2._0.ViewModel
 
         private DatabaseContext _dbContext;
         private RelayCommand saveCommand;
+
         private ICommand returnEntryCommand;
+        private ICommand addIngredientCommand;
+
+        public ObservableCollection<RecipeIngredient> EditableIngredients { get; set; } = new();
 
         public string Name
         {
@@ -27,6 +33,7 @@ namespace WhatWillWeEat2._0.ViewModel
             {
                 name = value;
                 NotifyPropertyChanged(nameof(Name));
+                RefreshSave();
             }
         }
 
@@ -40,6 +47,7 @@ namespace WhatWillWeEat2._0.ViewModel
             {
                 description = value;
                 NotifyPropertyChanged(nameof(Description));
+                RefreshSave();
             }
         }
 
@@ -75,7 +83,7 @@ namespace WhatWillWeEat2._0.ViewModel
             {
                 if(saveCommand == null)
                 {
-                    saveCommand = new RelayCommand(SaveRecipe, () => CanBeSaved);
+                    saveCommand = new RelayCommand(SaveRecipe);
                 }
                 return saveCommand;
             }
@@ -110,51 +118,48 @@ namespace WhatWillWeEat2._0.ViewModel
             }
         }
 
+
+        public ICommand AddIngredientCommand => addIngredientCommand ??= new RelayCommand(AddIngredient);
+
+        private void AddIngredient()
+        {
+            var ingredient = new Ingredient();
+            var recipeIngredient = new RecipeIngredient { Ingredient = ingredient };
+
+            if (ingredient is INotifyPropertyChanged npc)
+                npc.PropertyChanged += OnIngredientChanged;
+
+            EditableIngredients.Add(recipeIngredient);
+            RefreshSave();
+        }
+
+
+
         private async void SaveRecipe()
         {
-            List<RecipeIngredient> recipeIngredients = new List<RecipeIngredient>();
-            List<Ingredient> ingredients = new List<Ingredient>();
+            if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Description))
+            {
+                await AppShell.Current.DisplayAlert("Missing Info", "Name and description are required.", "OK");
+                return;
+            }
 
-            string[] splittedIngredients = Ingredients
-                .Trim()
-                .Split(", ")
-                .ToArray();
-
-            Recipe recipe = new Recipe()
+            Recipe recipe = new()
             {
                 Name = Name.Trim(),
-                Description = Description.Trim()
+                Description = Description.Trim(),
+                RecipeIngredients = EditableIngredients
             };
 
-
-            foreach (string ingredientString in splittedIngredients)
+            foreach (var recipeIngredient in EditableIngredients)
             {
-                Ingredient ingredient;
-
-                try
-                {
-                    ingredient = IngredientUtils.ConvertStringToIngredient(ingredientString);
-                }
-                catch(InvalidIngredientException)
-                {
-                    await AppShell.Current.DisplayAlert("Incorrect format", "Specified ingredients are in incorrect format!", "OK");
-                    return;
-                }
-
-                RecipeIngredient recipeIngredient = new RecipeIngredient()
-                { 
-                    Recipe = recipe,
-                    Ingredient = ingredient
-                };
-
-                ingredients.Add(ingredient);
-                recipeIngredients.Add(recipeIngredient);
+                var ingredient = recipeIngredient.Ingredient;
+                recipeIngredient.Recipe = recipe;
 
                 List<Allergen> allergens = await DbContext.Allergens
                     .Where(a => a.Name.ToLower() == ingredient.Name.ToLower())
                     .ToListAsync();
 
-                foreach(Allergen allergen in allergens)
+                foreach (var allergen in allergens)
                 {
                     await DbContext.IngredientAllergens.AddAsync(new IngredientAllergen
                     {
@@ -164,27 +169,15 @@ namespace WhatWillWeEat2._0.ViewModel
                         AllergenId = allergen.ID
                     });
                 }
-            }
-
-            recipe.RecipeIngredients = recipeIngredients;
-            await DbContext.Recipes.AddAsync(recipe);
-
-            for(int i = 0; i < ingredients.Count; i++)
-            {
-                Ingredient ingredient = ingredients[i];
-                ingredient.RecipeIngredients = ingredient.RecipeIngredients
-                    .Where(ri => ri.Ingredient == ingredient)
-                    .ToList();
 
                 await DbContext.Ingredients.AddAsync(ingredient);
             }
 
-            await DbContext.RecipeIngredients.AddRangeAsync(recipeIngredients);
-
+            await DbContext.Recipes.AddAsync(recipe);
+            await DbContext.RecipeIngredients.AddRangeAsync(EditableIngredients);
             await DbContext.SaveChangesAsync();
 
-            await AppShell.Current.DisplayAlert("Success!", "The recipe and its ingredients were added successfully!", "OK");
-
+            await AppShell.Current.DisplayAlert("Success!", "Recipe added successfully!", "OK");
             await AppShell.Current.Navigation.PopAsync();
         }
 
@@ -192,5 +185,11 @@ namespace WhatWillWeEat2._0.ViewModel
         {
             SaveCommand.NotifyCanExecuteChanged();
         }
+
+        private void OnIngredientChanged(object sender, PropertyChangedEventArgs e)
+        {
+            RefreshSave();
+        }
+
     }
 }

@@ -13,8 +13,22 @@
         <Label Text="Description:" FontSize="Medium"/>
         <Entry Text="{Binding Description, Mode=TwoWay}" FontSize="Medium" ReturnCommand="{Binding ReturnEntryCommand}"/>
         <Label Text="Ingredients:" FontSize="Medium"/>
-        <Entry Text="{Binding Ingredients, Mode=TwoWay}" FontSize="Small" 
-                Placeholder="(quantity) (unit) (name) or (quantity) (name) or (name)" ReturnCommand="{Binding ReturnEntryCommand}"/>
+        <CollectionView ItemsSource="{Binding EditableIngredients}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10" ColumnDefinitions="*, Auto" BackgroundColor="Thistle">
+                        <Grid RowDefinitions="Auto,Auto,Auto,Auto">
+                            <Entry Grid.Row="0" Text="{Binding Ingredient.Quantity, Mode=TwoWay}" Placeholder="Quantity"/>
+                            <Entry Grid.Row="1" Text="{Binding Ingredient.Unit, Mode=TwoWay}" Placeholder="Unit"/>
+                            <Entry Grid.Row="2" Text="{Binding Ingredient.Name, Mode=TwoWay}" Placeholder="Name"/>
+                            <Button Grid.Row="3" Text="X" Clicked="RemoveIngredient_Clicked"/>
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Button Text="Add Ingredient" Command="{Binding AddIngredientCommand}" Margin="0,10"/>
+
         <Button BackgroundColor="#D7B76E" Text="Save" FontSize="Medium" Margin="5" Command="{Binding SaveCommand}"/>
     </VerticalStackLayout>
 </ContentPage>

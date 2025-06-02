@@ -4,17 +4,40 @@
              x:Class="WhatWillWeEat2._0.RecipePage"
              xmlns:vm="clr-namespace:WhatWillWeEat2._0.ViewModel"
              xmlns:conv="clr-namespace:WhatWillWeEat2._0.Converters"
-             Title="Recipe">
-    <VerticalStackLayout Padding="12">
-        <Label Text="Name:" FontSize="Medium"/>
-        <Entry Text="{Binding CurrentRecipe.Name, Mode=TwoWay}" ReturnCommand="{Binding ReturnEntryCommand}" FontSize="Medium"/>
-        <Label Text="Description:" FontSize="Medium"/>
-        <Entry Text="{Binding CurrentRecipe.Description, Mode=TwoWay}" ReturnCommand="{Binding ReturnEntryCommand}" FontSize="Medium"/>
-        <Label Text="Ingredients:" FontSize="Medium"/>
-        <Entry Text="{Binding IngredientsDisplay}" ReturnCommand="{Binding ReturnEntryCommand}" 
-               FontSize="Small" 
-               Placeholder="(quantity) (unit) (name) or (quantity) (name) or (name)"/>
-        <Button BackgroundColor="#D7B76E" Text="Save" FontSize="Medium" Margin="5" Command="{Binding SaveCommand}"/>
-        <Button BackgroundColor="#D7B76E" Text="Delete" FontSize="Medium" Margin="5" Command="{Binding DeleteCommand}"/>
-    </VerticalStackLayout>
+             Title="Recipe"
+             x:Name="RecipePageView">
+    <ScrollView>
+        <VerticalStackLayout Padding="12" Spacing="10">
+            <Label Text="Name:" FontSize="Medium"/>
+            <Entry Text="{Binding CurrentRecipe.Name, Mode=TwoWay}" ReturnCommand="{Binding ReturnEntryCommand}" FontSize="Medium"/>
+
+            <Label Text="Description:" FontSize="Medium"/>
+            <Entry Text="{Binding CurrentRecipe.Description, Mode=TwoWay}" ReturnCommand="{Binding ReturnEntryCommand}" FontSize="Medium"/>
+
+            <Label Text="Ingredients:" FontSize="Medium"/>
+            <CollectionView ItemsSource="{Binding EditableIngredients}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10" ColumnDefinitions="*, Auto" BackgroundColor="Thistle">
+                            <Grid RowDefinitions="Auto,Auto,Auto,Auto">
+                                <Entry Grid.Row="0" Text="{Binding Ingredient.Quantity, Mode=TwoWay}" Placeholder="Quantity" Completed="Entry_Completed"/>
+                                <Entry Grid.Row="1" Text="{Binding Ingredient.Unit, Mode=TwoWay}" Placeholder="Unit" Completed="Entry_Completed"/>
+                                <Entry Grid.Row="2" Text="{Binding Ingredient.Name, Mode=TwoWay}" Placeholder="Name" Completed="Entry_Completed"/>
+                                <Button Grid.Row="3" Text="X"
+                                        VerticalOptions="Start"
+                                        Clicked="RemoveIngredient_Clicked"/>
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="Add Ingredient"
+                    Command="{Binding AddIngredientCommand}"
+                    Margin="0,10"/>
+
+            <Button BackgroundColor="#D7B76E" Text="Save" FontSize="Medium" Margin="5" Command="{Binding SaveCommand}"/>
+            <Button BackgroundColor="#D7B76E" Text="Delete" FontSize="Medium" Margin="5" Command="{Binding DeleteCommand}"/>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

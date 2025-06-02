@@ -1,4 +1,5 @@
 ﻿using SQLite;
+using System.Collections.ObjectModel;
 
 namespace StartUp.Model
 {
@@ -14,7 +15,7 @@ namespace StartUp.Model
         [NotNull]
         public string Description { get; set; }
 
-        public List<RecipeIngredient> RecipeIngredients { get; set; }
+        public ObservableCollection<RecipeIngredient> RecipeIngredients { get; set; }
 
         public Recipe()
         {
@@ -41,5 +42,6 @@ namespace StartUp.Model
                 RecipeIngredients = this.RecipeIngredients
             };
         }
+
     }
 }
